@@ -1,66 +1,24 @@
 import express from "express";
+import {
+	addPilotesControlleur,
+	displayPilotes,
+} from "./controller/PilotesControlleur.js";
+import { displayVoitures } from "./controller/VoituresControlleur.js";
+import { addVoitureControlleur } from "./controller/VoituresControlleur.js";
 
 const app = express();
 const port = 3000;
 
 app.use(express.json());
 
-const pilotes = [
-	{ id: 1, name: "Alonzo" },
-	{ id: 2, name: "Verstapen" },
-	{ id: 3, name: "Occon" },
-];
-
-const voitures = [
-	{ id: 1, marque: "Ferrari", couleur: "rouge" },
-	{ id: 2, marque: "Mercedes", couleur: "noir" },
-	{ id: 3, marque: "renauld", couleur: "jaune" },
-];
 //+++++GET+++++++
-app.get("/pilotes", (req, res) => {
-	if (pilotes.length === 0) {
-		return res.status(400).json({ message: "Pilotes don't exist" });
-	}
-
-	return res.status(200).json(pilotes);
-});
-
-app.get("/voitures", (req, res) => {
-	if (voitures.length === 0) {
-		return res.status(400).json({ message: "voiture don't exist" });
-	}
-
-	return res.status(200).json(voitures);
-});
+app.get("/pilotes", displayPilotes);
+app.get("/voitures", displayVoitures);
 
 //+++++Post++++++
-app.post("/pilotes", (req, res) => {
-	const pilote = pilotes.find((e) => e.id == req.body.id);
-	if (pilote) {
-		return res.status(400).json({ message: "Pilotes already exist" });
-	}
+app.post("/voitures", addVoitureControlleur);
 
-	let newPilote = req.body;
-	pilotes.push(newPilote);
-
-	return res
-		.status(200)
-		.json({ message: "pilote is create", pilote: newPilote });
-});
-
-app.post("/voitures", (req, res) => {
-	const voiture = voitures.find((e) => e.id == req.body.id);
-	if (voiture) {
-		return res.status(400).json({ message: "Voiture already exist" });
-	}
-
-	let newVoiture = req.body;
-	voitures.push(newVoiture);
-
-	return res
-		.status(200)
-		.json({ message: "voiture is create", voiture: newVoiture });
-});
+app.post("/pilotes", addPilotesControlleur);
 
 //++++++DELETE+++++++
 app.delete("/pilotes/:id", (req, res) => {
