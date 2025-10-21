@@ -1,4 +1,9 @@
-import { getVoitures, addVoiture } from "../models/Voitures.js";
+import {
+	getVoitures,
+	addVoiture,
+	deleteVoiture,
+	updateVoitures,
+} from "../models/Voitures.js";
 
 // afficher/GET  voitures
 export function displayVoitures(req, res) {
@@ -25,4 +30,29 @@ export function addVoitureControlleur(req, res) {
 	return res
 		.status(200)
 		.json({ message: "pilote is create", voiture: newVoiture });
+}
+
+//Delete
+
+export function remouveVoiture(req, res) {
+	const id = req.params.id;
+
+	const sucess = deleteVoiture(id);
+
+	if (!sucess) {
+		return res.status(400).json({ message: "Voiture don't exist" });
+	}
+
+	return res.status(200).json({ message: "Voiture delete" });
+}
+
+//PUT/modifer
+export function upGradeVoiture(req, res) {
+	const id = req.body.id;
+	const sucess = updateVoitures(id, req.body);
+
+	if (!sucess) {
+		return res.status(400).json({ message: "Voiture don't exist" });
+	}
+	return res.status(200).json({ message: "Voiture update" });
 }
