@@ -35,8 +35,6 @@ export function addVoitureControlleur(req, res) {
 //Delete
 
 export function remouveVoiture(req, res) {
-	const id = req.params.id;
-
 	const sucess = deleteVoiture(id);
 
 	if (!sucess) {
@@ -48,8 +46,7 @@ export function remouveVoiture(req, res) {
 
 //PUT/modifer
 export function upGradeVoiture(req, res) {
-	const id = req.body.id;
-	const sucess = updateVoitures(id, req.body);
+	const sucess = updateVoitures(req.body);
 
 	if (!sucess) {
 		return res.status(400).json({ message: "Voiture don't exist" });

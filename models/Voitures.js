@@ -27,15 +27,15 @@ export function deleteVoiture(id) {
 }
 
 //update/put
-export function updateVoitures(id, newdata) {
+export function updateVoitures(newVoiture) {
+	const id = newVoiture.id;
 	const voiture = voitures.find((e) => e.id == id);
-
 	if (!voiture) {
 		return false;
 	}
 
-	voiture.marque = newdata.marque || voiture.marque;
-	voiture.couleur = newdata.couleur || voiture.couleur;
+	voiture.marque = newVoiture.marque || voiture.marque;
+	voiture.couleur = newVoiture.couleur || voiture.couleur;
 
 	return true;
 }

@@ -4,20 +4,28 @@ const pilotes = [
 	{ id: 3, name: "Occon" },
 ];
 
-//GET
+//++++++++++++++++GET+++++++++++++++
 export function getPilotes() {
 	return pilotes;
 }
 
-//ADD pilotes
-export function addPilotes(pilote) {
-	pilotes.push(pilote);
+//+++++++++++++ADD pilotes++++++++++++++++
+export function addPilotes(newPilote) {
+	const piloteTest = pilotes.find((e) => e.pilote === newPilote);
+
+	if (piloteTest) {
+		return false;
+	}
+
+	pilotes.push(newPilote);
+	return true;
 }
 export { pilotes };
 
-//delete
+//++++++++++++++delete+++++++++++++++
 export function deletePilotes(id) {
 	const pilote = pilotes.find((e) => e.id == id);
+
 	if (!pilote) {
 		return false;
 	}
@@ -28,14 +36,16 @@ export function deletePilotes(id) {
 	return true;
 }
 
-//update/put
-export function updatePilotes(id, newdata) {
+//++++++++++++++update/put+++++++++++++++++
+export function updatePilotes(newPilote) {
+	const id = newPilote.id;
+
 	const pilote = pilotes.find((e) => e.id == id);
 
 	if (!pilote) {
 		return false;
 	}
 
-	pilote.name = newdata.name || pilote.name;
+	pilote.name = newPilote.name || pilote.name;
 	return true;
 }

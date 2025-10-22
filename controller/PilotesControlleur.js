@@ -5,8 +5,9 @@ import {
 	updatePilotes,
 } from "../models/Pilotes.js";
 
-// Display/get
+// +++++++++++++Display/get++++++++++++++++++++
 export function displayPilotes(req, res) {
+	//recuperation des pilotes
 	const pilotes = getPilotes();
 
 	if (pilotes.length === 0) {
@@ -16,8 +17,9 @@ export function displayPilotes(req, res) {
 	return res.status(200).json(pilotes);
 }
 
-// ajouter/post
+//+++++++++++++++++++ ajouter/post++++++++++++++++++++++
 export function addPilotesControlleur(req, res) {
+	//recuperation des pilotes
 	const pilotes = getPilotes();
 	const pilote = pilotes.find((e) => e.id == req.body.id);
 	if (pilote) {
@@ -25,6 +27,7 @@ export function addPilotesControlleur(req, res) {
 	}
 
 	let newPilote = req.body;
+	//appel methode add Pilote
 	addPilotes(newPilote);
 
 	return res
@@ -32,10 +35,11 @@ export function addPilotesControlleur(req, res) {
 		.json({ message: "pilote is create", pilote: newPilote });
 }
 
-//DELETE
+//++++++++++++++DELETE+++++++++++++++++++++
 export function remouvePilote(req, res) {
 	const id = req.params.id;
 
+	//recuperation de deletePilotes dans le model
 	const sucess = deletePilotes(id);
 
 	if (!sucess) {
@@ -45,10 +49,10 @@ export function remouvePilote(req, res) {
 	return res.status(200).json({ message: "pilote delete" });
 }
 
-//PUT/modifer
+//+++++++++++++++++PUT/modifer++++++++++++++++++++++
 export function upGradePilote(req, res) {
-	const id = req.body.id;
-	const sucess = updatePilotes(id, req.body);
+	//recuperaiton de update dans le model
+	const sucess = updatePilotes(req.body);
 
 	if (!sucess) {
 		return res.status(400).json({ message: "Pilotes don't exist" });
