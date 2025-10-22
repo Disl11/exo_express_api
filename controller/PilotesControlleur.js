@@ -1,6 +1,7 @@
 import {
 	addPilotes,
 	deletePilotes,
+	getOneById,
 	getPilotes,
 	updatePilotes,
 } from "../models/Pilotes.js";
@@ -15,6 +16,17 @@ export function displayPilotes(req, res) {
 	}
 
 	return res.status(200).json(pilotes);
+}
+
+export function getOneByIdController(req, res) {
+	const id = parseInt(req.params.id);
+	const pilote = getOneById(id);
+
+	if (!pilote) {
+		return res.status(400).json({ message: "not found" });
+	}
+
+	return res.status(200).json(pilote);
 }
 
 //+++++++++++++++++++ ajouter/post++++++++++++++++++++++

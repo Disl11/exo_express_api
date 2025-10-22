@@ -9,6 +9,10 @@ export function getPilotes() {
 	return pilotes;
 }
 
+export function getOneById(id) {
+	return pilotes.find((p) => p.id === id);
+}
+
 //+++++++++++++ADD pilotes++++++++++++++++
 export function addPilotes(newPilote) {
 	pilotes.push(newPilote);
