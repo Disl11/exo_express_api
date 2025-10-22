@@ -11,12 +11,6 @@ export function getPilotes() {
 
 //+++++++++++++ADD pilotes++++++++++++++++
 export function addPilotes(newPilote) {
-	const piloteTest = pilotes.find((e) => e.pilote === newPilote);
-
-	if (piloteTest) {
-		return false;
-	}
-
 	pilotes.push(newPilote);
 	return true;
 }
