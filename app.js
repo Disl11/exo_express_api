@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "./dataBase.js";
 import pilotesRoute from "./routes/pilotesRoute.js";
 import voituresRoute from "./routes/voituresRoute.js";
 import usersRoute from "./routes/usersRoute.js";

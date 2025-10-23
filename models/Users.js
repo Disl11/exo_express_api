@@ -1,28 +1,32 @@
-let users = [
-	{ id: 1, name: "Brian", email: "brian@gmail.com", password: "123" },
-	{ id: 2, name: "chloe", email: "chloe@gmail.com", password: "azerty" },
-	{ id: 3, name: "jordan", email: "jordan@gmail.com", password: "987" },
-];
+import mongoose from "../dataBase.js";
 
-export function getUser() {
-	return users;
+// Schema de la collections users
+const userSchema = new mongoose.Schema({
+	name: { type: String, required: true },
+	email: { type: String, required: true, unique: true },
+	password: { type: String, required: true },
+});
+
+//instancier le modéle
+const User = mongoose.model("User", userSchema);
+
+export async function getUser() {
+	return await User.find(); //retourne une promeese qui contient la collection "users"
 }
 
-export function addUser(newUser) {
+export async function addUser(newUser) {
 	//verifier l'email
-	const userExist = users.find((u) => u.email === newUser.email);
+	const userExist = await User.findOne({ email: newUser.email }); //findOne() cherche un seul document correspondant, ici a {email: newUser.email}
 	if (userExist) {
 		return false;
 	}
 
-	users.push(newUser);
+	const user = new User(newUser);
+	await user.save(); // enrigstre dans la collection MongoDb
 	return true;
 }
 
-export function loginUser(email, password) {
-	const userLogin = users.find(
-		(u) => u.email === email && u.password === password
-	);
-
+export async function loginUser(email, password) {
+	const userLogin = await User.findOne({ email, password });
 	return userLogin || null;
 }
