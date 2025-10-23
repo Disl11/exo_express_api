@@ -1,7 +1,6 @@
 import mongoose from "../dataBase.js";
 
 const piloteSchema = new mongoose.Schema({
-	_id: { type: Number },
 	name: { type: String },
 });
 
@@ -42,15 +41,16 @@ export async function deletePilotes(id) {
 }
 
 //++++++++++++++update/put+++++++++++++++++
-export function updatePilotes(newPilote) {
-	const id = newPilote.id;
+export async function updatePilotes(newPilote) {
+	const id = newPilote._id;
 
-	const pilote = pilotes.find((e) => e.id == id);
+	const pilote = await Pilote.findById(id);
 
 	if (!pilote) {
 		return false;
 	}
 
 	pilote.name = newPilote.name || pilote.name;
+	await pilote.save();
 	return true;
 }

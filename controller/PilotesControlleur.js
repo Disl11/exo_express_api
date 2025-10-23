@@ -77,10 +77,10 @@ export async function remouvePilote(req, res) {
 }
 
 //+++++++++++++++++PUT/modifer++++++++++++++++++++++
-export function upGradePilote(req, res) {
+export async function upGradePilote(req, res) {
 	try {
 		//recuperaiton de update dans le model
-		const sucess = updatePilotes(req.body);
+		const sucess = await updatePilotes(req.body);
 
 		if (!sucess) {
 			return res.status(400).json({ message: "Pilotes don't exist" });
