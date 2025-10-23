@@ -7,67 +7,86 @@ import {
 } from "../models/Pilotes.js";
 
 // +++++++++++++Display/get++++++++++++++++++++
-export function displayPilotes(req, res) {
-	//recuperation des pilotes
-	const pilotes = getPilotes();
+export async function displayPilotes(req, res) {
+	try {
+		//recuperation des pilotes
+		const pilotes = getPilotes();
 
-	if (pilotes.length === 0) {
-		return res.status(400).json({ message: "Pilotes don't exist" });
+		if (pilotes.length === 0) {
+			return res.status(400).json({ message: "Pilotes don't exist" });
+		}
+
+		return res.status(200).json(pilotes);
+	} catch (err) {
+		return res.status(500).json({ message: err.message });
 	}
-
-	return res.status(200).json(pilotes);
 }
 
-export function getOneByIdController(req, res) {
-	const id = parseInt(req.params.id);
-	const pilote = getOneById(id);
+export async function getOneByIdController(req, res) {
+	try {
+		const id = parseInt(req.params.id);
+		const pilote = getOneById(id);
 
-	if (!pilote) {
-		return res.status(400).json({ message: "not found" });
+		if (!pilote) {
+			return res.status(400).json({ message: "not found" });
+		}
+
+		return res.status(200).json(pilote);
+	} catch (err) {
+		return res.status(500).json({ message: err.message });
 	}
-
-	return res.status(200).json(pilote);
 }
 
 //+++++++++++++++++++ ajouter/post++++++++++++++++++++++
-export function addPilotesControlleur(req, res) {
-	//recuperation des pilotes
-	const pilotes = getPilotes();
-	const pilote = pilotes.find((e) => e.id == req.body.id);
-	if (pilote) {
-		return res.status(400).json({ message: "Pilotes already exist" });
+export async function addPilotesControlleur(req, res) {
+	try {
+		//recuperation de addpilotes
+		const pilotes = await addPilotes(req.body);
+		if (!pilotes) {
+			return res.status(400).json({ message: "Pilotes already exist" });
+		}
+
+		let newPilote = req.body;
+		//appel methode add Pilote
+		await addPilotes(newPilote);
+
+		return res
+			.status(200)
+			.json({ message: "pilote is create", pilote: newPilote });
+	} catch (err) {
+		return res.status(500).json({ message: err.message });
 	}
-
-	let newPilote = req.body;
-	//appel methode add Pilote
-	addPilotes(newPilote);
-
-	return res
-		.status(200)
-		.json({ message: "pilote is create", pilote: newPilote });
 }
 
 //++++++++++++++DELETE+++++++++++++++++++++
-export function remouvePilote(req, res) {
-	const id = req.params.id;
+export async function remouvePilote(req, res) {
+	try {
+		const id = req.params.id;
 
-	//recuperation de deletePilotes dans le model
-	const sucess = deletePilotes(id);
+		//recuperation de deletePilotes dans le model
+		const sucess = await deletePilotes(id);
 
-	if (!sucess) {
-		return res.status(400).json({ message: "Pilotes don't exist" });
+		if (!sucess) {
+			return res.status(400).json({ message: "Pilotes don't exist" });
+		}
+
+		return res.status(200).json({ message: "pilote delete" });
+	} catch (err) {
+		return res.status(500).json({ message: err.message });
 	}
-
-	return res.status(200).json({ message: "pilote delete" });
 }
 
 //+++++++++++++++++PUT/modifer++++++++++++++++++++++
 export function upGradePilote(req, res) {
-	//recuperaiton de update dans le model
-	const sucess = updatePilotes(req.body);
+	try {
+		//recuperaiton de update dans le model
+		const sucess = updatePilotes(req.body);
 
-	if (!sucess) {
-		return res.status(400).json({ message: "Pilotes don't exist" });
+		if (!sucess) {
+			return res.status(400).json({ message: "Pilotes don't exist" });
+		}
+		return res.status(200).json({ message: "pilotes update" });
+	} catch (err) {
+		return res.status(500).json({ message: err.message });
 	}
-	return res.status(200).json({ message: "pilotes update" });
 }

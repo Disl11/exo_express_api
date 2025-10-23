@@ -1,35 +1,42 @@
-const pilotes = [
-	{ id: 1, name: "Alonzo" },
-	{ id: 2, name: "Verstapen" },
-	{ id: 3, name: "Occon" },
-];
+import mongoose from "../dataBase.js";
+
+const piloteSchema = new mongoose.Schema({
+	_id: { type: Number },
+	name: { type: String },
+});
+
+const Pilote = mongoose.model("Pilote", piloteSchema);
 
 //++++++++++++++++GET+++++++++++++++
-export function getPilotes() {
-	return pilotes;
+export async function getPilotes() {
+	return await Pilote.find();
 }
 
-export function getOneById(id) {
-	return pilotes.find((p) => p.id === id);
+export async function getOneById(id) {
+	return await Pilote.findById(id);
 }
 
 //+++++++++++++ADD pilotes++++++++++++++++
-export function addPilotes(newPilote) {
-	pilotes.push(newPilote);
+export async function addPilotes(newPilote) {
+	// verifier le nom
+	const piloteExist = await Pilote.findOne({ name: newPilote.name });
+
+	if (piloteExist) {
+		return false;
+	}
+
+	const pilote = new Pilote(newPilote);
+	await pilote.save();
 	return true;
 }
-export { pilotes };
 
 //++++++++++++++delete+++++++++++++++
-export function deletePilotes(id) {
-	const pilote = pilotes.find((e) => e.id == id);
+export async function deletePilotes(id) {
+	const pilote = await Pilote.findByIdAndDelete(id);
 
 	if (!pilote) {
 		return false;
 	}
-
-	const indexOf = pilotes.indexOf(pilote);
-	pilotes.splice(indexOf, 1);
 
 	return true;
 }
